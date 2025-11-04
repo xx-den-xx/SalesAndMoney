@@ -1,23 +1,29 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.compose.compiler)
 }
 
-@Suppress("UnstableApiUsage")
+kotlin {
+    jvmToolchain(21)
+}
+
 android {
-    namespace = Config.applicationId
-    compileSdk = Config.compileSdk
+    namespace = libs.versions.applicationId.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = Config.applicationId
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-        versionCode = Config.versionCode
-        versionName = Config.versionName
+        applicationId = libs.versions.applicationId.get()
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = libs.versions.testInstrumentationRunner.get()
         vectorDrawables {
-            useSupportLibrary = Config.useSupportLibrary
+            useSupportLibrary = libs.versions.useSupportLibrary.get().toBoolean()
         }
     }
 
@@ -34,14 +40,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.Compose.version
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.kotlin.compiler.ext.get()
     }
     packaging {
         resources {
@@ -52,22 +57,26 @@ android {
 
 dependencies {
 
-    implementation(Dependencies.AndroidX.coreKtx)
-    implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
-    implementation(Dependencies.AndroidX.activityCompose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
 
-    implementation(platform(Dependencies.Compose.bom))
-    implementation(Dependencies.Compose.ui)
-    implementation(Dependencies.Compose.uiGraphics)
-    implementation(Dependencies.Compose.uiToolingPreview)
-    implementation(Dependencies.Compose.material3)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.profileinstaller)
+    kapt(libs.dagger.hilt.compiler)
 
-    testImplementation(Dependencies.Test.jUnit)
-    androidTestImplementation(Dependencies.Test.androidXExpJUnit)
-    androidTestImplementation(Dependencies.Test.androidXEspressoCore)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
-    androidTestImplementation(platform(Dependencies.Compose.bom))
-    androidTestImplementation(Dependencies.Compose.composeUITestJUnit4)
-    debugImplementation(Dependencies.Compose.composeUITooling)
-    debugImplementation(Dependencies.Compose.composeUITestManifest)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
