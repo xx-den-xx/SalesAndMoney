@@ -11,6 +11,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/database" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/purchases-buckets-main" />
+            <option value="$PROJECT_DIR$/sam-data" />
           </set>
         </option>
       </GradleProjectSettings>
