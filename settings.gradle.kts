@@ -15,3 +15,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SalesAndMoney"
 include(":app")
+include(":database")
+include(":features:purchases-buckets-main")
+include(":sam-data")
